@@ -95,13 +95,18 @@ fn main() {
     //     None => println!("No media found"),
     // }
 
-    match catelog.get_by_index(0) {
-        MaybeValue::Value(media) => println!("Item: {:#?}", media),
-        MaybeValue::None => println!("No media found"),
-    }
+    // match catelog.get_by_index(0) {
+    //     MaybeValue::Value(media) => println!("Item: {:#?}", media),
+    //     MaybeValue::None => println!("No media found"),
+    // }
 
-    match catelog.get_by_index_with_option(10) {
-        Some(media) => println!("Item: {:#?}", media),
-        None => println!("No media found"),
-    }
+    // match catelog.get_by_index_with_option(10) {
+    //     Some(media) => println!("Item: {:#?}", media),
+    //     None => println!("No media found"),
+    // }
+
+    // using unwrap
+    let media = catelog.get_by_index_with_option(110);
+    let media_placeholder = Media::Placeholder;
+    println!("Item: {:#?}", media.unwrap_or(&media_placeholder));
 }
