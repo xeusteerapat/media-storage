@@ -1,65 +1,6 @@
-#[derive(Debug)]
-enum Media {
-    Book { title: String, author: String },
-    Movie { title: String, director: String },
-    AudioBook { title: String },
-    Podcast(u32),
-    Placeholder,
-}
-
-impl Media {
-    fn description(&self) -> String {
-        match self {
-            Media::Book { title, author } => format!("Book: {} by {}", title, author),
-            Media::Movie { title, director } => format!("Movie: {} by {}", title, director),
-            Media::AudioBook { title } => format!("AudioBook: {}", title),
-            Media::Podcast(episode_number) => format!("Podcast: {}", episode_number),
-            Media::Placeholder => format!("Placeholder"),
-        }
-    }
-}
-
-#[derive(Debug)]
-struct Catalog {
-    items: Vec<Media>,
-}
-
-impl Catalog {
-    fn new() -> Self {
-        Catalog { items: vec![] }
-    }
-
-    fn add(&mut self, media: Media) {
-        self.items.push(media);
-    }
-
-    // with custom get by index with custom error handling
-    fn get_by_index(&self, index: usize) -> MaybeValue {
-        // check validity of index
-        if self.items.len() > index {
-            MaybeValue::Value(&self.items[index])
-        } else {
-            MaybeValue::None
-        }
-    }
-
-    fn get_by_index_with_option(&self, index: usize) -> Option<&Media> {
-        if self.items.len() > index {
-            Some(&self.items[index])
-        } else {
-            None
-        }
-    }
-}
-
-enum MaybeValue<'a> {
-    Value(&'a Media),
-    None,
-}
-
-fn print_media(media: Media) {
-    print!("{:#?}", media);
-}
+mod content;
+use content::catelog::Catelog;
+use content::media::Media;
 
 fn main() {
     let audio_book = Media::AudioBook {
@@ -83,7 +24,7 @@ fn main() {
     // print!("{}", audio_book.description());
     // print!("{}", audio_book.description());
 
-    let mut catelog = Catalog::new();
+    let mut catelog = Catelog::new();
     catelog.add(audio_book);
     catelog.add(my_favorite_movie);
     catelog.add(my_favorite_book);
@@ -106,7 +47,7 @@ fn main() {
     // }
 
     // using unwrap
-    let media = catelog.get_by_index_with_option(110);
+    let media = catelog.get_by_index_with_option(0);
     let media_placeholder = Media::Placeholder;
     println!("Item: {:#?}", media.unwrap_or(&media_placeholder));
 }
